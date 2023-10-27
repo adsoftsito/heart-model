@@ -13,3 +13,5 @@ jobs:
     - uses: actions/checkout@v2
     - name: show python version
       run: python --version
+    - name: show dir
+      run: ls -la
