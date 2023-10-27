@@ -24,7 +24,7 @@ jobs:
     - name: train model
       run: python model/train.py
     - name: docker build
-      run: docker build -t ${{secrets.DOCKER_USER}}/${{secrets.MODEL_NAME}}:${{github.sha}} .
+      run: docker build -t ${{secrets.DOCKER_USER}}/${{secrets.MODEL_NAME}}:${{github.event.client_payload.sha}} .
     - name: show images
       run: docker images
     - name: docker login
@@ -34,7 +34,7 @@ jobs:
       run: |
         docker login -u $DOCKER_USER -p $DOCKER_PASSWORD 
     - name: docker Push to hub.docker.com
-      run: docker push ${{secrets.DOCKER_USER}}/${{secrets.MODEL_NAME}}:${{ github.sha }}
+      run: docker push ${{secrets.DOCKER_USER}}/${{secrets.MODEL_NAME}}:${{ github.event.client_payload.sha }}
     - name: update docker user in k8 
       run: sed -i 's/{docker_user}/${{secrets.DOCKER_USER}}/g' manifests/k8s.yml
     - name: update model name in k8 
@@ -56,7 +56,7 @@ jobs:
       with:
         namespace: ${{secrets.OKTETO_NAMESPACE }}
         manifest: manifests/k8s.yml
-        tag: ${{ secrets.DOCKER_USERNAME }}/${{secrets.MODEL_NAME}}:${{ github.sha }}
+        tag: ${{ secrets.DOCKER_USERNAME }}/${{secrets.MODEL_NAME}}:${{ github.event.client_payload.sha }}
 
 
 
