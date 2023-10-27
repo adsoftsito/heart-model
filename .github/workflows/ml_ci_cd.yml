@@ -16,4 +16,4 @@ jobs:
     - name: show dir
       run: ls -la
     - name: pip install
-      run: python install -r requirements.txt
+      run: pip install -r requirements.txt
